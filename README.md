@@ -17,7 +17,7 @@ How To Play:
 
 Up, down, left, right arrow keys for navigating Cherry on the map. Hit space for changing Cherry's color scheme. When you've collected all red dots, hit space again to turn red and go meet your friend on the upper right corner to win the game! If you want to start again, press space on the winning display.
 
-Sources: All assets created using GIMP by myself. Code references/sources are written in the code files.
+Sources: All assets are created in GIMP by myself. Code references/sources are written in the code files.
 
 This game was built with [NEST](NEST.md).
 
