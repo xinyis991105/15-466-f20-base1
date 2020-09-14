@@ -68,6 +68,7 @@ if $(OS) = NT { #Windows
 
 #---- build ----
 #This is the part of the file that tells Jam how to build your project.
+#CREDITS TO F19'S CODEBASE AND SUGGESTIONS ON THE GAME1 CHANNEL IN DISCORD!!!!!!!!!
 
 #Store the names of all the .cpp files to build into a variable:
 GAME_NAMES =
@@ -76,13 +77,22 @@ GAME_NAMES =
 	main
 	load_save_png
 	gl_compile_program
+	data_path
 	Mode
 	GL
 	Load
 	;
 
+PACK_SPRITES_NAMES =
+	asset_generation
+	data_path
+	;
+
 LOCATE_TARGET = objs ; #put objects in 'objs' directory
-Objects $(GAME_NAMES:S=.cpp) ;
+Objects $(GAME_NAMES:S=.cpp) $(PACK_SPRITES_NAMES:S=.cpp) ;
 
 LOCATE_TARGET = dist ; #put main in 'dist' directory
 MainFromObjects game : $(GAME_NAMES:S=$(SUFOBJ)) ;
+
+LOCATE_TARGET = assets ; #put pack-sprites utility in the 'sprites' directory:
+MainFromObjects asset_gen : $(PACK_SPRITES_NAMES:S=$(SUFOBJ)) load_save_png$(SUFOBJ) ;

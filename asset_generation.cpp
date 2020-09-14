@@ -1,6 +1,8 @@
+#include "GL.hpp"
 #include "load_save_png.hpp"
 #include "read_write_chunk.hpp"
 #include "PPU466.hpp"
+#include "data_path.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -10,25 +12,30 @@
 #include <stdint.h>
 
 int main() {
+	// Referenced ideas proposed on Discord Channels!
 	std::vector<PPU466::Palette> palettes;
 	std::vector<PPU466::Tile> tiles;
 	std::ifstream metafile;
 	glm::uvec2 size;
 	std::vector<glm::u8vec4> data;
-	metafile.open("tmp.txt");
+	metafile.open(data_path("../tmp.txt"));
 	std::string line;
 	if (metafile.is_open()) {
 		while (std::getline(metafile, line)) {
 			load_png(line, &size, &data, LowerLeftOrigin);
-			int w = size[1] / 8;
-			int h = size[0] / 8;
+			int w = size[0] / 8;
+			int h = size[1] / 8;
 			PPU466::Palette p;
 			int color_num = 0;
+			printf("%d %d\n", w, h);
 			for (int i=0; i < w; i++) {
 				for (int j=0; j < h; j++) {
 					// block i, j
 					// one tile per block
-					PPU466::Tile t;
+					PPU466::Tile t = {
+						{ 0, 0, 0, 0, 0, 0, 0, 0 },
+						{ 0, 0, 0, 0, 0, 0, 0, 0 }
+					};
 					for (int a=0; a < 8; a++) {
 						for (int b=0; b < 8; b++) {
 							// pixel (a,b) in the block
@@ -65,8 +72,8 @@ int main() {
 		metafile.close();
 		std::ofstream palettes_stream;
 		std::ofstream tiles_stream;
-		palettes_stream.open("palettes.asset");
-		tiles_stream.open("tiles.asset");
+		palettes_stream.open(data_path("../palettes.asset"));
+		tiles_stream.open(data_path("../tiles.asset"));
 		write_chunk(std::string("pale"), palettes, &palettes_stream);
 		write_chunk(std::string("tile"), tiles, &tiles_stream);
 		palettes_stream.close();
